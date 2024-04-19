@@ -16,6 +16,10 @@ namespace Client.Controllers
         [HttpPost("/login")]
         public IActionResult Login([FromBody]LoginRequest loginRequest)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
             var result = _authenticationService.Login(loginRequest);
             if(result.StatusCode==401)
             {

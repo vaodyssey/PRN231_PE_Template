@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Repository.Constants;
 using Repository.Payload.Request.StudentService;
 using Repository.Services;
-using System.Security.Claims;
+
 
 namespace API.Controllers
 {
@@ -14,6 +14,45 @@ namespace API.Controllers
         public StudentController(IStudentService studentService)
         {
             _studentService = studentService;        
+        }
+        [HttpGet("/student")]
+        [Authorize(Policy = "StaffOnly")]
+        public IActionResult Get([FromQuery] int groupId, 
+            [FromQuery] DateTime minBirthYear,
+            [FromQuery] DateTime maxBirthYear,
+            [FromQuery] int pageIndex,
+            [FromQuery] int pageSize)
+        {
+            var result = _studentService.Get(new GetStudentListRequest()
+            {
+                GroupId = groupId,
+                MinBirthYear = minBirthYear,
+                MaxBirthYear = maxBirthYear,
+                PageIndex = pageIndex,
+                PageSize = pageSize
+            });
+            if (result.StatusCode == 401)
+            {
+                return Unauthorized(result);
+            }
+            return Ok(result);
+
+        }
+        [HttpGet("/student/{id}")]
+        [Authorize(Policy = "StaffOnly")]
+        public IActionResult GetById([FromRoute] int id)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var result = _studentService.GetById(id);
+            if (result.StatusCode == 401)
+            {
+                return Unauthorized(result);
+            }
+            return Ok(result);
+
         }
         [HttpPost("/student")]
         [Authorize(Policy = "StaffOnly")]

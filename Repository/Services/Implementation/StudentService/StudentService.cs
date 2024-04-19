@@ -18,9 +18,11 @@ namespace Repository.Services.Implementation.StudentService
     {
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
+        private GetStudentByIdService _getStudentByIdService;   
         private CreateStudentService _createStudentService;
         private UpdateStudentService _updateStudentService;
-        private DeleteStudentService _deleteStudentService;        
+        private DeleteStudentService _deleteStudentService;
+        private GetStudentListService _getStudentListService;
         public StudentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
@@ -39,12 +41,23 @@ namespace Repository.Services.Implementation.StudentService
         {
             return _deleteStudentService.Delete(id);
         }
+        public StudentResponse GetById(int id)
+        {
+            return _getStudentByIdService.Get(id);
+        }
+        public StudentListResponse Get(GetStudentListRequest request)
+        {
+            return _getStudentListService.Get(request);
+        }
         private void InitializeServices()
         {
-            _createStudentService = new CreateStudentService(_unitOfWork, _mapper);
-            _deleteStudentService = new DeleteStudentService(_unitOfWork);
+            _createStudentService = new CreateStudentService(_unitOfWork, _mapper);            
             _updateStudentService = new UpdateStudentService(_unitOfWork, _mapper);
+            _getStudentByIdService = new GetStudentByIdService(_unitOfWork,_mapper);
+            _getStudentListService = new GetStudentListService(_unitOfWork);
+            _deleteStudentService = new DeleteStudentService(_unitOfWork);
         }
 
+       
     }
 }

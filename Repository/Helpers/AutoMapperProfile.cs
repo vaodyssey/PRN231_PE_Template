@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Repository.Entities;
 using Repository.Payload.Request.StudentService;
+using Repository.Payload.Response.StudentService;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,6 +20,8 @@ namespace Repository.Helpers
             CreateMap<UpdateStudentRequest, Student>()
               .ForMember(dest => dest.Group, opt => opt.Ignore())
               .ReverseMap();
+            CreateMap<Student,StudentResponse>()            
+             .ReverseMap();
         }
     }
 }

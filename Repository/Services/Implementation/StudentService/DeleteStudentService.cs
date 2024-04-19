@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Repository.Constants;
 using Repository.Entities;
+using Repository.Payload.Request.StudentService;
 using Repository.Payload.Response.StudentService;
 using Repository.Repository;
 using System;
@@ -15,6 +16,7 @@ namespace Repository.Services.Implementation.StudentService
     {
         private int _studentId;
         private IUnitOfWork _unitOfWork;
+        private Student _student;
         public DeleteStudentService(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;            
@@ -22,12 +24,18 @@ namespace Repository.Services.Implementation.StudentService
         public DeleteStudentResponse Delete(int id)
         {
             ResetDeleteStudentId(id);
+            GetStudentById();
+            if (_student == null) return StudentNotFoundResponse();
             DeleteStudentById();
             return DeleteStudentSuccessfulResponse();
         }
         private void ResetDeleteStudentId(int id)
         {
             _studentId = id;
+        }
+        private void GetStudentById()
+        {
+            _student = _unitOfWork.StudentRepository.Get(student => student.Id == _studentId).FirstOrDefault();
         }
         private void DeleteStudentById()
         {
@@ -41,6 +49,15 @@ namespace Repository.Services.Implementation.StudentService
                 Result = "Success",
                 StatusCode = StudentServiceStatusCode.DELETE_STUDENT_SUCCESSFUL,
                 Message = $"Successfully deleted the Student with Id = {_studentId}."
+            };
+        }
+        private DeleteStudentResponse StudentNotFoundResponse()
+        {
+            return new DeleteStudentResponse()
+            {
+                Result = "Failure",
+                StatusCode = StudentServiceStatusCode.STUDENT_NOT_FOUND,
+                Message = $"The student with the Id {_studentId} is not found. Please try again with another StudentId."
             };
         }
     }

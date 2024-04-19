@@ -10,6 +10,8 @@ namespace Repository.Services
 {
     public interface IStudentService
     {
+        public StudentListResponse Get(GetStudentListRequest request);
+        public StudentResponse GetById(int id);
         public NewStudentResponse Create(NewStudentRequest newStudentRequest);
         public DeleteStudentResponse Delete(int id);
         public UpdateStudentResponse Update(UpdateStudentRequest updateStudentRequest);
