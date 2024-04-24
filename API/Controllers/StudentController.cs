@@ -7,17 +7,18 @@ using Repository.Services;
 
 namespace API.Controllers
 {
+
     public class StudentController : Controller
     {
         private IStudentService _studentService;
-        
+
         public StudentController(IStudentService studentService)
         {
-            _studentService = studentService;        
+            _studentService = studentService;
         }
         [HttpGet("/student")]
         [Authorize(Policy = "StaffOnly")]
-        public IActionResult Get([FromQuery] int groupId, 
+        public IActionResult Get([FromQuery] int groupId,
             [FromQuery] DateTime minBirthYear,
             [FromQuery] DateTime maxBirthYear,
             [FromQuery] int pageIndex,
@@ -59,9 +60,9 @@ namespace API.Controllers
         public IActionResult Create([FromBody] NewStudentRequest studentRequest)
         {
             if (!ModelState.IsValid)
-            {                
+            {
                 return BadRequest(ModelState);
-            }            
+            }
             var result = _studentService.Create(studentRequest);
             if (result.StatusCode == 401)
             {
@@ -73,7 +74,7 @@ namespace API.Controllers
         [HttpDelete("/student/{id}")]
         [Authorize(Policy = "StaffOnly")]
         public IActionResult Delete([FromRoute] int id)
-        {            
+        {
             var result = _studentService.Delete(id);
             if (result.StatusCode == 401)
             {
@@ -91,7 +92,7 @@ namespace API.Controllers
                 return BadRequest(ModelState);
             }
             var result = _studentService.Update(updateStudentRequest);
-           
+
             if (result.StatusCode == 401)
             {
                 return Unauthorized(result);
@@ -99,5 +100,5 @@ namespace API.Controllers
             return Ok(result);
 
         }
-    }
+    } 
 }

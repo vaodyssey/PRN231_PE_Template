@@ -13,6 +13,7 @@ using System.Text;
 
 namespace API.Configs
 {
+
     public static class DependencyInjection
     {
         public static IServiceCollection AddUnitOfWork(this IServiceCollection services)

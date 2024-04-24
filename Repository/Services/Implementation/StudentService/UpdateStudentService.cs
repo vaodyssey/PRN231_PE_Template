@@ -55,7 +55,8 @@ namespace Repository.Services.Implementation.StudentService
             {
                 Result = "Success",
                 StatusCode = StudentServiceStatusCode.UPDATE_STUDENT_SUCCESSFUL,
-                Message = $"Successfully updated the details of Student with Id = {_updateStudentRequest.Id}."
+                Message = $"Successfully updated the details of Student with Id = {_updateStudentRequest.Id}.",
+                ReturnData = _updateStudentRequest
             };
         }
         private UpdateStudentResponse StudentNotFoundResponse()

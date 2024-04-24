@@ -1,0 +1,286 @@
+{
+	"info": {
+		"_postman_id": "9c5e36d4-2691-44ed-ae7b-b723186b1a59",
+		"name": "Student",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24913445"
+	},
+	"item": [
+		{
+			"name": "Create",
+			"item": [
+				{
+					"name": "Create",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Correct Return Data\", function () {\r",
+									"    let response = pm.response.json()\r",
+									"    pm.expect(response[\"returnData\"]).to.have.property('email')    \r",
+									"    pm.expect(response[\"returnData\"]).to.have.property('age')   \r",
+									"    pm.expect(response[\"returnData\"]).to.have.property('dateOfBirth')   \r",
+									"    pm.expect(response[\"returnData\"]).to.have.property('groupId')   \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"student@example.com\",\r\n  \"age\": 18,\r\n  \"fullName\": \"Va Dep Trai\",\r\n  \"dateOfBirth\":\"2022-04-12T12:34:56\",\r\n  \"groupId\":3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:7229/student"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetAll",
+			"item": [
+				{
+					"name": "GetAll",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzNTIxMDc3LCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.s2VpU07pT5Q_Zy7CKEi9eoLXPjzT3EWrYVmwMKeebO0"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "https://localhost:7229/student?groupId=2&minBirthYear=1900-01-01T00:00:00&maxBirthYear=1901-01-01T00:00:00&pageIndex=1&pageSize=4",
+							"protocol": "https",
+							"host": [
+								"localhost"
+							],
+							"port": "7229",
+							"path": [
+								"student"
+							],
+							"query": [
+								{
+									"key": "groupId",
+									"value": "2"
+								},
+								{
+									"key": "minBirthYear",
+									"value": "1900-01-01T00:00:00"
+								},
+								{
+									"key": "maxBirthYear",
+									"value": "1901-01-01T00:00:00"
+								},
+								{
+									"key": "pageIndex",
+									"value": "1"
+								},
+								{
+									"key": "pageSize",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "GetById",
+			"item": [
+				{
+					"name": "GetById",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"pm.test(\"Response contains all fields\", function () {\r",
+									"    let jsonResponse = pm.response.json()    \r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('id')\r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('email')\r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('fullName')\r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('dateOfBirth')\r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('groupName')\r",
+									"});\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    let jsonResponse = pm.response.json()    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"id\"]).to.equal(1)    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"email\"]).to.equal(\"minh@fpt.edu.vn\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"fullName\"]).to.equal(\"Le Van Minh1\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"dateOfBirth\"]).to.equal(\"1900-01-01T00:00:00\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"groupName\"]).to.equal(\"Group001\")    \r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "https://localhost:7229/student/1"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Delete",
+			"item": [
+				{
+					"name": "Delete",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "https://localhost:7229/student/15"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update",
+			"item": [
+				{
+					"name": "Update",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Response values are correct\", function () {\r",
+									"    let jsonResponse = pm.response.json()    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"id\"]).to.equal(1)    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"email\"]).to.equal(\"abc@gmail.com\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"fullName\"]).to.equal(\"A Real Name\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"dateOfBirth\"]).to.equal(\"2000-04-19T00:00:00\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"groupId\"]).to.equal(3)    \r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+							}
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"id\": 1,\r\n  \"email\": \"abc@gmail.com\",\r\n  \"age\": 18,\r\n  \"fullName\": \"A Real Name\",\r\n  \"dateOfBirth\": \"2000-04-19\",\r\n  \"groupId\": 3\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "https://localhost:7229/student"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}

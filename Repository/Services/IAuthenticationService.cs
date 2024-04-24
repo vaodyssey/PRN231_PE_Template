@@ -12,4 +12,5 @@ namespace Repository.Services
     {
         public LoginResponse Login(LoginRequest loginRequest);
     }
+
 }

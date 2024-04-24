@@ -11,7 +11,8 @@ using System.Threading.Tasks;
 
 namespace Repository.Services.Implementation
 {
-    public class AuthenticationService:IAuthenticationService
+
+    public class AuthenticationService : IAuthenticationService
     {
         private LoginRequest _loginRequest;
         private UserRole _userRole;
@@ -38,8 +39,8 @@ namespace Repository.Services.Implementation
             _userRole = _unitOfWork.UserRoleRepository
                 .Get(userRole => userRole.Username == _loginRequest.Username)
                 .FirstOrDefault()!;
-            
-            if (_userRole==null || 
+
+            if (_userRole == null ||
                 !_userRole.Passphrase!.Equals(_loginRequest.Password)) return false;
             return true;
         }
@@ -72,4 +73,5 @@ namespace Repository.Services.Implementation
             };
         }
     }
+
 }

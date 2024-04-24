@@ -14,4 +14,5 @@ namespace Repository.Payload.Request.Login
         [Required]
         public string Password { get; set; }
     }
+
 }

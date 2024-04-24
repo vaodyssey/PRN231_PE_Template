@@ -26,5 +26,5 @@ namespace Repository.Payload.Request.StudentService
         [Required(ErrorMessage = "Date Of Birth is required")]
         [Range(1, 9, ErrorMessage = "GroupId must be between 1-9.")]
         public int? GroupId { get; set; }
-    }
+    }   
 }

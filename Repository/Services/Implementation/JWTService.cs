@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 
 namespace Repository.Services.Implementation
 {
+
     public class JWTService
     {
         private static IConfigurationRoot _config;
@@ -32,12 +33,12 @@ namespace Repository.Services.Implementation
             return new JwtSecurityTokenHandler().WriteToken(token);
 
         }
-        private static Claim[] GetClaims(ClaimsParameters claimsParameters )
+        private static Claim[] GetClaims(ClaimsParameters claimsParameters)
         {
             return new Claim[]{
-                new Claim(ClaimTypes.NameIdentifier, claimsParameters.Id),                
-                new Claim(ClaimTypes.Role, claimsParameters.UserRole),
-            };
+                                new Claim(ClaimTypes.NameIdentifier, claimsParameters.Id),
+                                new Claim(ClaimTypes.Role, claimsParameters.UserRole),
+                            };
         }
 
         private static void InitializeObjects()
@@ -50,7 +51,8 @@ namespace Repository.Services.Implementation
     }
     public class ClaimsParameters
     {
-        public string Id { get; set; }        
+        public string Id { get; set; }
         public string UserRole { get; set; }
     }
+
 }
