@@ -36,7 +36,7 @@ namespace API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+            return StatusCode(result.StatusCode,result);
 
         }
         [HttpGet("/student/{id}")]
@@ -52,7 +52,7 @@ namespace API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
 
         }
         [HttpPost("/student")]
@@ -68,7 +68,7 @@ namespace API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+            return StatusCode(result.StatusCode,result);
 
         }
         [HttpDelete("/student/{id}")]
@@ -80,7 +80,7 @@ namespace API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
 
         }
         [HttpPut("/student")]
@@ -97,7 +97,7 @@ namespace API.Controllers
             {
                 return Unauthorized(result);
             }
-            return Ok(result);
+            return StatusCode(result.StatusCode, result);
 
         }
     } 

@@ -17,15 +17,12 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Status code is 200\", function () {\r",
-									"    pm.response.to.have.status(200);\r",
-									"});\r",
-									"pm.test(\"Correct Return Data\", function () {\r",
 									"    let response = pm.response.json()\r",
-									"    pm.expect(response[\"returnData\"]).to.have.property('email')    \r",
-									"    pm.expect(response[\"returnData\"]).to.have.property('age')   \r",
-									"    pm.expect(response[\"returnData\"]).to.have.property('dateOfBirth')   \r",
-									"    pm.expect(response[\"returnData\"]).to.have.property('groupId')   \r",
-									"});"
+									"    pm.response.to.have.status(201);        \r",
+									"    pm.expect(response[\"returnData\"][\"Id\"]).is.not.null\r",
+									"});\r",
+									"//Post trả id của student vừa add.\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -36,21 +33,21 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "POST",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"email\": \"student@example.com\",\r\n  \"age\": 18,\r\n  \"fullName\": \"Va Dep Trai\",\r\n  \"dateOfBirth\":\"2022-04-12T12:34:56\",\r\n  \"groupId\":3\r\n}",
+							"raw": "{\r\n  \"email\": \"student3@example.com\",\r\n  \"age\": 18,\r\n  \"fullName\": \"Va Dep Trai\",\r\n  \"dateOfBirth\":\"2022-04-12T12:34:56\",\r\n  \"groupId\":3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "https://localhost:7229/student"
+						"url": "{{serverUrl}}/{{entityName}}"
 					},
 					"response": []
 				}
@@ -61,11 +58,35 @@
 			"item": [
 				{
 					"name": "GetAll",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test('Status code is 200', function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Number of students matches request parameters\", function () {\r",
+									"    let jsonResponse = pm.response.json();\r",
+									"    pm.expect(jsonResponse[\"returnData\"]).to.have.length(2);\r",
+									"    pm.expect(jsonResponse[\"returnData\"][0]).to.have.property(\"id\");\r",
+									"    pm.expect(jsonResponse[\"returnData\"][0]).to.have.property(\"email\");\r",
+									"    pm.expect(jsonResponse[\"returnData\"][0]).to.have.property(\"groupName\");\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
 					"request": {
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzNTIxMDc3LCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.s2VpU07pT5Q_Zy7CKEi9eoLXPjzT3EWrYVmwMKeebO0"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "GET",
@@ -97,14 +118,12 @@
 							}
 						],
 						"url": {
-							"raw": "https://localhost:7229/student?groupId=2&minBirthYear=1900-01-01T00:00:00&maxBirthYear=1901-01-01T00:00:00&pageIndex=1&pageSize=4",
-							"protocol": "https",
+							"raw": "{{serverUrl}}/{{entityName}}?groupId=2&minBirthYear=1900-01-01T00:00:00&maxBirthYear=2025-01-01T00:00:00&pageIndex=1&pageSize=3",
 							"host": [
-								"localhost"
+								"{{serverUrl}}"
 							],
-							"port": "7229",
 							"path": [
-								"student"
+								"{{entityName}}"
 							],
 							"query": [
 								{
@@ -117,7 +136,7 @@
 								},
 								{
 									"key": "maxBirthYear",
-									"value": "1901-01-01T00:00:00"
+									"value": "2025-01-01T00:00:00"
 								},
 								{
 									"key": "pageIndex",
@@ -125,7 +144,7 @@
 								},
 								{
 									"key": "pageSize",
-									"value": "4"
+									"value": "3"
 								}
 							]
 						}
@@ -147,21 +166,12 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									"pm.test(\"Response contains all fields\", function () {\r",
-									"    let jsonResponse = pm.response.json()    \r",
-									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('id')\r",
-									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('email')\r",
-									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('fullName')\r",
-									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('dateOfBirth')\r",
-									"    pm.expect(jsonResponse[\"returnData\"]).to.have.property('groupName')\r",
-									"});\r",
+									"\r",
+									"//kiểm tra return obj có đủ field ko (ưu tiền những field quan trọng, e.g. Id phải bằng 1).\r",
 									"pm.test(\"Response values are correct\", function () {\r",
 									"    let jsonResponse = pm.response.json()    \r",
 									"    pm.expect(jsonResponse[\"returnData\"][\"id\"]).to.equal(1)    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"email\"]).to.equal(\"minh@fpt.edu.vn\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"fullName\"]).to.equal(\"Le Van Minh1\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"dateOfBirth\"]).to.equal(\"1900-01-01T00:00:00\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"groupName\"]).to.equal(\"Group001\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"email\"]).to.equal(\"abc@gmail.com\")         \r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -173,12 +183,12 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "GET",
 						"header": [],
-						"url": "https://localhost:7229/student/1"
+						"url": "{{serverUrl}}/{{entityName}}/1"
 					},
 					"response": []
 				}
@@ -207,7 +217,19 @@
 									"pm.test(\"Status code is 200\", function () {\r",
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
-									""
+									"\r",
+									"pm.test(\"Student no longer exists in database\"), function(){\r",
+									"    pm.sendRequest({\r",
+									"        url:\"https://localhost:7229/student/23\",\r",
+									"        method:'POST',\r",
+									"        header:{\r",
+									"            'content-type': 'application/json',\r",
+									"            'Authorization': \"Bearer \" + pm.environment.get(\"accessToken\"),\r",
+									"            'Accept': \"*/*\"\r",
+									"        }\r",
+									"    })\r",
+									"    pm.response.to.have.status(404);\r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -218,12 +240,12 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "DELETE",
 						"header": [],
-						"url": "https://localhost:7229/student/15"
+						"url": "{{serverUrl}}/{{entityName}}/23"
 					},
 					"response": []
 				}
@@ -243,15 +265,20 @@
 									"    pm.response.to.have.status(200);\r",
 									"});\r",
 									"\r",
-									"pm.test(\"Response values are correct\", function () {\r",
-									"    let jsonResponse = pm.response.json()    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"id\"]).to.equal(1)    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"email\"]).to.equal(\"abc@gmail.com\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"fullName\"]).to.equal(\"A Real Name\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"dateOfBirth\"]).to.equal(\"2000-04-19T00:00:00\")    \r",
-									"    pm.expect(jsonResponse[\"returnData\"][\"groupId\"]).to.equal(3)    \r",
-									"});\r",
-									""
+									"pm.test(\"Response values are correct\"), function(){\r",
+									"    pm.sendRequest({\r",
+									"        url:\"https://localhost:7229/student/24\",\r",
+									"        method:'GET',\r",
+									"        header:{\r",
+									"            'content-type': 'application/json',\r",
+									"            'Authorization': \"Bearer \" + pm.environment.get(\"accessToken\"),\r",
+									"            'Accept': \"*/*\"\r",
+									"        }\r",
+									"    })\r",
+									"    let jsonResponse = pm.response.json()        \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"age\"]).to.equal(\"20\")    \r",
+									"    pm.expect(jsonResponse[\"returnData\"][\"fullName\"]).to.equal(\"A Real Name Second\")        \r",
+									"}"
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -262,21 +289,21 @@
 						"auth": {
 							"type": "bearer",
 							"bearer": {
-								"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiIyIiwiZXhwIjoxNzEzOTUzNjgxLCJpc3MiOiJ2YXRodWdsaWZlIiwiYXVkIjoidmF0aHVnbGlmZSJ9.X-kbvjpZFGmb4s9Acc49juR5JAAn6QtJz5DXMxzw_6w"
+								"token": "{{accessToken}}"
 							}
 						},
 						"method": "PUT",
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n  \"id\": 1,\r\n  \"email\": \"abc@gmail.com\",\r\n  \"age\": 18,\r\n  \"fullName\": \"A Real Name\",\r\n  \"dateOfBirth\": \"2000-04-19\",\r\n  \"groupId\": 3\r\n}",
+							"raw": "{\r\n  \"id\": 24,\r\n  \"email\": \"abc@gmail.com\",\r\n  \"age\": 20,\r\n  \"fullName\": \"A Real Name Second\",\r\n  \"dateOfBirth\": \"2000-04-19\",\r\n  \"groupId\": 3\r\n}",
 							"options": {
 								"raw": {
 									"language": "json"
 								}
 							}
 						},
-						"url": "https://localhost:7229/student"
+						"url": "{{serverUrl}}/{{entityName}}"
 					},
 					"response": []
 				}

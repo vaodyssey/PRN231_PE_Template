@@ -33,13 +33,18 @@ namespace Repository.Services.Implementation.StudentService
         {
             _newStudentRequest = null!;
             _newStudentRequest = newStudentRequest;
-        }        
+        }     
         private void InsertStudentToDb()
         {
             _student = _mapper.Map<Student>(_newStudentRequest);
+            //_student.Id = GetLatestId();
             _unitOfWork.StudentRepository.Insert(_student);
             _unitOfWork.Save();
         }
+        //private int GetLatestId()
+        //{
+        //    return _unitOfWork.StudentRepository.Get().OrderByDescending(e => e.Id).FirstOrDefault().Id + 1;
+        //}
         private NewStudentResponse CreateStudentSuccessfulResponse()
         {
             return new NewStudentResponse
@@ -47,7 +52,9 @@ namespace Repository.Services.Implementation.StudentService
                 Result = "Success",
                 StatusCode = StudentServiceStatusCode.CREATE_STUDENT_SUCCESSFUL,
                 Message = "Successfully created a new Student.",
-                ReturnData = _newStudentRequest
+                ReturnData = new { 
+                   Id = _student.Id 
+                }
             };
         }
     }

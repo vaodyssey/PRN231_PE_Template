@@ -14,7 +14,7 @@ namespace Repository.Constants
         public static int STUDENT_NOT_FOUND = 404;
         public static int GET_STUDENTS_SUCCESSFUL = 200;
         public static int GET_STUDENT_BY_ID_SUCCESSFUL = 200;
-        public static int CREATE_STUDENT_SUCCESSFUL = 200;
+        public static int CREATE_STUDENT_SUCCESSFUL = 201;
         public static int DELETE_STUDENT_SUCCESSFUL = 200;
         public static int UPDATE_STUDENT_SUCCESSFUL = 200;
     }

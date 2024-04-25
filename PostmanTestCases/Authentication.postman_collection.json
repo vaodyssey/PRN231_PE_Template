@@ -16,9 +16,12 @@
 							"listen": "test",
 							"script": {
 								"exec": [
-									"pm.test(\"Login Successful\", function () {\r",
+									"pm.test(\"Login Successful With Token\", function () {\r",
+									"    let response = pm.response.json\r",
 									"    pm.response.to.have.status(200);\r",
-									"});"
+									"    pm.expect(response[\"returnData\"]).is.not.null;\r",
+									"});\r",
+									""
 								],
 								"type": "text/javascript",
 								"packages": {}
@@ -38,12 +41,10 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7229/login",
-							"protocol": "https",
+							"raw": "{{serverUrl}}/login",
 							"host": [
-								"localhost"
+								"{{serverUrl}}"
 							],
-							"port": "7229",
 							"path": [
 								"login"
 							],
@@ -66,7 +67,9 @@
 							"script": {
 								"exec": [
 									"pm.test(\"Login Failure\", function () {\r",
+									"    let response = pm.response.json()\r",
 									"    pm.response.to.have.status(401);\r",
+									"    pm.expect(response[\"returnData\"]).is.null;\r",
 									"});"
 								],
 								"type": "text/javascript",
@@ -87,12 +90,10 @@
 							}
 						},
 						"url": {
-							"raw": "https://localhost:7229/login",
-							"protocol": "https",
+							"raw": "{{serverUrl}}/login",
 							"host": [
-								"localhost"
+								"{{serverUrl}}"
 							],
-							"port": "7229",
 							"path": [
 								"login"
 							],
@@ -104,24 +105,6 @@
 								}
 							]
 						}
-					},
-					"response": []
-				},
-				{
-					"name": "Incorrect Login Role (Admin)",
-					"request": {
-						"method": "POST",
-						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n  \"username\": \"admin\",\r\n  \"password\": \"admin@123\"\r\n}\r\n",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": "https://localhost:7229/login"
 					},
 					"response": []
 				}
